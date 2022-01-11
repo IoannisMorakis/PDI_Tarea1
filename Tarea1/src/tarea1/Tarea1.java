@@ -45,7 +45,7 @@ public class Tarea1 {
     
     
     
-    public static void setPath1(String path)throws IOException {
+    public static void setPath1(String path)throws IOException { // Dirreccion imagen 1
         path1= path;
         File image = new File(path);
         pos1=-1;
@@ -53,7 +53,7 @@ public class Tarea1 {
     
     }
     
-    public static void setPath2(String path)throws IOException {
+    public static void setPath2(String path)throws IOException { // Dirreccion imagen 2
         path2= path;
         File image = new File(path);
         pos2=-1;
@@ -63,211 +63,8 @@ public class Tarea1 {
     }
     
 
-    /**
-     * @param args the command line arguments
-     * @throws java.io.IOException
-    */
     
-    /*
-    public static void main(String[] args) throws IOException {
-        // TODO code application logic here
-        run("bmp_24.bmp"); // /bmp_24.bmp /LAND3.bmp
-        //"C:\\Users\\owner\\OneDrive\\Escritorio\\"
-    
-    }
-    */
-    
-    
-    public static void run(String path) throws IOException {
-        // TODO code application logic here
-        File image = new File(path); // /bmp_24.bmp /LAND3.bmp 
-        //"C:\\Users\\owner\\OneDrive\\Escritorio\\"
-        
-        // Read Image Pixel by Pixel
-        
-        
-        
-        BufferedImage imgBuffer = ImageIO.read(image);
-        BufferedImage imgBuffer1 = ImageIO.read(image);
-        BufferedImage imgBuffer2 = ImageIO.read(image);
-        BufferedImage imgBuffer3 = ImageIO.read(image);
-        BufferedImage imgBuffer4 = ImageIO.read(image);
-        
-        
-        
-        //String strT= infoImg(path);
-        //System.out.println(strT);
-        
-        /*
-        histograma(path);
-        
-        
-        for (int i = 0; i < Histograma_grisC.size(); i++) {
-            System.out.println("Niveles de Gris " +Histograma_grisL.get(i) +": " + Histograma_grisC.get(i));
-        }
-        */
-        
-        
-        
-        
-        File f1 = new File("Output1.bmp");
-        File f2 = new File("Output2.bmp");
-        File f3 = new File("Output3.bmp");
-        File f4 = new File("Output3.bmp");
-        
-        //System.out.println(imgBuffer1.getWidth());
-        //System.out.println(imgBuffer1.getHeight());
-        
-        
-        
-        
-        
-       
-        for (int x=0; x< imgBuffer1.getWidth(); x++){
-            for (int y=0; y< imgBuffer1.getHeight(); y++){
-                int ipixel= imgBuffer1.getRGB(x, y);
-                //System.out.println(ipixel);
-                String p = Integer.toHexString(ipixel);
-                //System.out.println(p);
-
-
-
-                String alpha = p.subSequence(0, 2).toString();
-                String r = p.subSequence(2,4).toString();
-                String g = p.subSequence(4,6).toString();
-                String b = p.subSequence(6,8).toString();
-
-
-                
-                //
-                // String to Char
-                // Creating array of string length
-                    //char[] ch = new char[p.length()];
-
-                    // Copy character by character into array
-                    //for (int i = 0; i < p.length(); i++) {
-                       // ch[i] = p.charAt(i);
-                    //}
-                //
-                
-
-                //System.out.println(alpha);
-                //System.out.println(r);
-                //System.out.println(g);
-                //System.out.println(b);
-
-                //String SP = alpha + r + g + b;
-                //System.out.println(SP);
-
-                //int iz = (int)Long.parseLong(SP, 16);
-                //System.out.println("z"+iz);
-
-
-
-                int ir = (int)Long.parseLong(r, 16);
-                int ig = (int)Long.parseLong(g, 16);
-                int ib = (int)Long.parseLong(b, 16);
-
-                //System.out.println("iresult "+ iresult); 
-                
-                int iresult1 = grayscale(alpha, ir,ig,ib);
-                int iresult2 = negative(alpha, ir,ig,ib);
-                
-                String Gp = Integer.toHexString(iresult1);
-                //System.out.println(p);
-
-
-
-                String Galpha = Gp.subSequence(0, 2).toString();
-                String Gr = Gp.subSequence(2,4).toString();
-                String Gg = Gp.subSequence(4,6).toString();
-                String Gb = Gp.subSequence(6,8).toString();
-                
-                
-                int Gir = (int)Long.parseLong(Gr, 16);
-                int Gig = (int)Long.parseLong(Gg, 16);
-                int Gib = (int)Long.parseLong(Gb, 16);
-                
-                
-                int iresult3 = blackwhite(alpha, Gir,Gig,Gib);
-                
-                
-                imgBuffer1.setRGB(x, y, iresult1);
-                imgBuffer2.setRGB(x, y, iresult2);
-                imgBuffer3.setRGB(x, y, iresult3);
-                
-                //Calculo histograma
-                //Color a_pixel;
-                
-                Color a_pixel=new Color(imgBuffer1.getRGB(x, y));
-                int ap=a_pixel.getAlpha();
-                int re=a_pixel.getRed();
-                int gr=a_pixel.getGreen();
-                int bl=a_pixel.getBlue();
-                int gris= (re+gr+bl)/3;
-
-                
-                //System.out.println(gris);
-                int id, elmt;
-                
-                if(Histograma_grisL.contains(gris)){
-                    id = Histograma_grisL.indexOf(gris);
-                
-                    elmt = Histograma_grisC.get(id);
-                    elmt++;
-                    Histograma_grisC.set(id, elmt);
-                    System.out.println(Histograma_grisL.get(id)+ " : "+ Histograma_grisC.get(id));
-                }
-                else{Histograma_grisL.add(gris);Histograma_grisC.add(1);}
-                
-                
-                
-                //Histograma_ap[ap]+=1;
-                //Histograma_re[re]+=1;
-                //Histograma_gr[gr]+=1;
-                //Histograma_bl[bl]+=1;
-                //Histograma_gris[gris]+=1;
-                
-                
-                
-                //imgBuffer.setRGB(x, y, Gi);
-                
-                
-                
-                
-                
-                
-        
-            }
-        
-        
-        }
-        
-        /*
-        grayscaleFile(imgBuffer1);
-        colorFile(imgBuffer2);
-        binaryFile(imgBuffer3);
-        
-        listArrImg.add(imgBuffer);
-        listArrImg.add(imgBuffer1);
-        listArrImg.add(imgBuffer2);
-        listArrImg.add(imgBuffer3);
-        
-        ImageIO.write(imgBuffer1, "bmp", f1);
-        ImageIO.write(imgBuffer2, "bmp", f2);
-        ImageIO.write(imgBuffer3, "bmp", f3);
-        */
-        
-        System.out.println("Done");
-        
-        
-        
-        
-        
-    }
-    
-    
-    public static int grayscaleFile( BufferedImage imgBuf) throws IOException{
+    public static int grayscaleFile( BufferedImage imgBuf) throws IOException{ //Escribe imagen en formato pgm
         // write file
         try {
           FileWriter myWriter = new FileWriter("fileGray.pgm");
@@ -297,9 +94,7 @@ public class Tarea1 {
           
           
           myWriter.close();
-          //System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
-          //System.out.println("An error occurred.");
           e.printStackTrace();
         }
         
@@ -307,7 +102,7 @@ public class Tarea1 {
     }
     
     
-    public static int colorFile( BufferedImage imgBuf) throws IOException{
+    public static int colorFile( BufferedImage imgBuf) throws IOException{ //Escribe imagen en format ppm
         // write file
         try {
           FileWriter myWriter = new FileWriter("fileColor.ppm");
@@ -341,9 +136,7 @@ public class Tarea1 {
           
           
           myWriter.close();
-          //System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
-          //System.out.println("An error occurred.");
           e.printStackTrace();
         }
         
@@ -351,7 +144,7 @@ public class Tarea1 {
     }
     
     
-    public static int binaryFile( BufferedImage imgBuf) throws IOException{
+    public static int binaryFile( BufferedImage imgBuf) throws IOException{ //Escribe imagen en format pbm
         // write file
         try {
           FileWriter myWriter = new FileWriter("fileBin.pbm");
@@ -385,9 +178,7 @@ public class Tarea1 {
           
           
           myWriter.close();
-          //System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
-          //System.out.println("An error occurred.");
           e.printStackTrace();
         }
         
@@ -395,15 +186,8 @@ public class Tarea1 {
     }
     
     
-    public static int grayscale(String alpha, int r, int g, int b) throws IOException{
+    public static int grayscale(String alpha, int r, int g, int b) throws IOException{ //Transforma pixel en escala de gris
          
-        //Grayscale= 0.299R + 0.587G + 0.114B;
-        
-        //System.out.println(ir);
-        //System.out.println(ib);
-        //System.out.println(ib);
-
-
         double dr= r*0.299;
         double dg= g*0.587;
         double db= b*0.114;
@@ -413,8 +197,6 @@ public class Tarea1 {
         int ib= (int)db;
 
         int Gi= ir + ig +ib;
-
-
 
         String Gr= Integer.toHexString(Gi); //ir
         String Gg= Integer.toHexString(Gi); //ig
@@ -427,21 +209,7 @@ public class Tarea1 {
 
         }
         
-        /*
-                if(ir< 16){
-                    Gr= "0" + Gr;
-
-                }
-
-                if(ig< 16){
-                    Gg= "0" + Gg;
-
-                }
-                if(ib< 16){
-                    Gb= "0" + Gb;
-
-                }
-        */
+        
 
     
         //Get First Two Char from Every String
@@ -452,33 +220,16 @@ public class Tarea1 {
         String result = alpha+ Gr+ Gg +Gb;
 
 
-
         int iresult = (int)Long.parseLong(result, 16);
 
 
-        //System.out.println("G"+ Gr+ Gg +Gb);
-
-        /*
-        int[] arr = null;
-        arr[0]=r;
-        arr[1]=g;
-        arr[2]=b;
-        */
-        
-        
-        
-
         return iresult;
-        //ImageIO.write(imgBuffer, "bmp", image);
     
     }
     
     
-    public static int negative(String alpha, int r, int g, int b) throws IOException{
+    public static int negative(String alpha, int r, int g, int b) throws IOException{ //Transforma pixel en negativo
          
-        
-
-
         double dr= 255 - r;
         double dg= 255 - g;
         double db= 255 - b;
@@ -510,8 +261,6 @@ public class Tarea1 {
         }
         
 
-        
-        
         //Get First Two Char from Every String
         Gr= String.format("%.02s", Gr);
         Gg= String.format("%.02s", Gg);
@@ -528,12 +277,10 @@ public class Tarea1 {
 
         return iresult;
         
-        //ImageIO.write(imgBuffer, "bmp", image);
-    
     }
     
     
-    public static int blackwhite(String alpha, int r, int g, int b) throws IOException{
+    public static int blackwhite(String alpha, int r, int g, int b) throws IOException{ //Transforma pixel de escala de gris a Blanco y Negro
         
         String bw ="00";
         if(r > 127){
@@ -547,11 +294,9 @@ public class Tarea1 {
 
 
         return iresult;
-        //ImageIO.write(imgBuffer, "bmp", image);
-    
     }
     
-    public static int uniqueColors(File img) throws IOException{
+    public static int uniqueColors(File img) throws IOException{ // cuenta colores unicos
         BufferedImage imgBuf = ImageIO.read(img);
         int count =0;
         List <Integer> list=new ArrayList<Integer>();  
@@ -567,7 +312,6 @@ public class Tarea1 {
                 
                 }
                 
-                
             }
         }
         
@@ -578,7 +322,7 @@ public class Tarea1 {
     
     
     
-    public static String infoImg(String pathS)throws IOException{
+    public static String infoImg(String pathS)throws IOException{ // informacion de la imagen
         
         File image = new File(pathS); 
         String result= "";
@@ -590,9 +334,7 @@ public class Tarea1 {
         // dimensions
         int width= imgBuffer.getWidth();
         int height = imgBuffer.getWidth();
-        //System.out.println("Width " + width);
         result= result+ "Width " + width + "\n";
-        //System.out.println("Height " + height);
         result= result+ "Height " + height+ "\n";
         
         
@@ -603,23 +345,19 @@ public class Tarea1 {
         String str = imgBuffer.toString();
         int it = str.charAt(20);
         
-        //System.out.println(str);
         
         String pB = "#pixelBits";
         
         it = str.indexOf("#pixelBits");
-        //System.out.println(it);
-        //result= result+ it+ "\n";
-        
         
         
         char mychar1 = str.charAt(str.indexOf("#pixelBits = ") + 13);
         char mychar2 = str.charAt(str.indexOf("#pixelBits = ") + 14);
         
-       //System.out.println("C"+ mychar1 );
+       
         
         int z1 = Character.getNumericValue(mychar1);
-        //System.out.println("#"+z1);
+        
         String str1 = "";
         
         if (mychar2== ' '){
@@ -630,10 +368,7 @@ public class Tarea1 {
         
         }
         
-        //String str1 = ""+ mychar1 + mychar2;
-        
         int ipb = Integer.valueOf(str1);
-        //System.out.println("##"+ipb);
         result= result+ "Pixel por Bits "+ipb+ "\n";
         
         
@@ -644,13 +379,11 @@ public class Tarea1 {
         // dpi = dot / inch
         int inch = width / 96;
         int dpi = width/inch;
-        //System.out.println("Horizontal DPI " + dpi);
         result= result + "Horizontal DPI " + dpi+ "\n";
         
         inch = height / 96;
         dpi = height / inch;
-        //System.out.println("Vertical DPI " + dpi);
-        
+       
         result= result + "Vertical DPI " + dpi+ "\n";
         
         
@@ -686,11 +419,6 @@ public class Tarea1 {
             result= result +"Intencidad de Azul " +Histograma_blL.get(i) +": " + Histograma_blC.get(i)+ "\n";
         }
         
-        //System.out.println( uColors);
-        
-        //System.out.println();
-        //System.out.println( "Results:");
-        //System.out.println( result);
         
         return result;
     
@@ -700,7 +428,7 @@ public class Tarea1 {
     
     
     
-    public static void transformGrayscale(String pathT, int N)throws IOException{
+    public static void transformGrayscale(String pathT, int N)throws IOException{ //Transforma imagen en escala de gris
         File image = new File(pathT); 
         
         File f = new File("Output"+ N +".bmp");
@@ -711,9 +439,8 @@ public class Tarea1 {
         for (int x=0; x< imgBuffer.getWidth(); x++){
             for (int y=0; y< imgBuffer.getHeight(); y++){
                 int ipixel= imgBuffer.getRGB(x, y);
-                //System.out.println(ipixel);
+
                 String p = Integer.toHexString(ipixel);
-                //System.out.println(p);
 
 
 
@@ -728,7 +455,6 @@ public class Tarea1 {
                 int ig = (int)Long.parseLong(g, 16);
                 int ib = (int)Long.parseLong(b, 16);
 
-                //System.out.println("iresult "+ iresult); 
                 
                 int iresult1 = grayscale(alpha, ir,ig,ib);
                 
@@ -736,8 +462,6 @@ public class Tarea1 {
                 
                 imgBuffer.setRGB(x, y, iresult1);
                 
-                
-                //imgBuffer.setRGB(x, y, Gi);
                 
             }
         
@@ -758,7 +482,7 @@ public class Tarea1 {
     }
     
     
-    public static void transformBin(String pathT, int N)throws IOException{
+    public static void transformBin(String pathT, int N)throws IOException{ //Transforma imagen en Blanco y Negro
         File image = new File(pathT); 
         
         
@@ -787,12 +511,11 @@ public class Tarea1 {
                 int ig = (int)Long.parseLong(g, 16);
                 int ib = (int)Long.parseLong(b, 16);
 
-                //System.out.println("iresult "+ iresult); 
                 
                 int iresult1 = grayscale(alpha, ir,ig,ib);
                 
                 String Gp = Integer.toHexString(iresult1);
-                //System.out.println(p);
+
 
 
 
@@ -828,7 +551,7 @@ public class Tarea1 {
     }
     
     
-    public static void transformNeg(String pathT, int N)throws IOException{
+    public static void transformNeg(String pathT, int N)throws IOException{ //Transforma imagen en Negativo
         File image = new File(pathT); 
         
         
@@ -881,7 +604,7 @@ public class Tarea1 {
     }
     
     
-    public static void histograma(String pathT)throws IOException{
+    public static void histograma(String pathT)throws IOException{ // Histograma
         File image = new File(pathT); 
         
         
@@ -963,7 +686,7 @@ public class Tarea1 {
     }
     
     
-    public static void makeLastList(int N)throws IOException{
+    public static void makeLastList(int N)throws IOException{ // Arregle lista de Buffers
         
         if(N==1){
             int i=pos1+1;
@@ -981,7 +704,7 @@ public class Tarea1 {
     
     }
     
-    public static void Deshacer(int N)throws IOException{
+    public static void Deshacer(int N)throws IOException{ // Deshace cambio
         File f = new File("Output"+ N +".bmp");
         
         BufferedImage imgBuffer;
@@ -999,7 +722,7 @@ public class Tarea1 {
     
     }
     
-    public static void Rehacer(int N)throws IOException{
+    public static void Rehacer(int N)throws IOException{ // Rehace Cambio
         File f = new File("Output"+ N +".bmp");
         BufferedImage imgBuffer;
         if(N==1){
@@ -1011,93 +734,11 @@ public class Tarea1 {
         
         }
     
-    
         ImageIO.write(imgBuffer, "bmp", f);
     }
     
     
     
     
-    
-    /*
-    public static void Boxblur()throws IOException{
-         int vec_pixel;
-            int res=0;
-            int cont=0;
-            int res_a=0;
-            int res_r=0;
-            int res_g=0;
-            int res_b=0;
-            int factor;
-            int anclaf= Math.round((float)a.length/2);
-            int anclac;
-            
-            
-            File image = new File("bmp_24.bmp"); 
-            BufferedImage imgBuffer1 = ImageIO.read(image);
-            BufferedImage imgBuffer4 = ImageIO.read(image);
-           
-            for (int i=0; i<a.length; i++){
-                for (int j=0; j<a[i].length; j++){
-                    anclac= Math.round((float)a[i].length/2);
-                    if ((x+i-anclaf) < imgBuffer1.getWidth() && (y+j-anclac) < imgBuffer1.getHeight()){
-                        vec_pixel=imgBuffer1.getRGB(Math.abs(x+(i-anclaf)), Math.abs(y+(j-anclac)));
-                        int ap = (vec_pixel & 0xff000000) >> 24;
-                        int  red   = (vec_pixel & 0x00ff0000) >> 16;
-                        int  green = (vec_pixel & 0x0000ff00) >> 8;
-                        int  blue  =  (vec_pixel & 0x000000ff);
-                        res_a=res_a + a[i][j]*(ap);
-                        res_r=res_r + a[i][j]*(red);
-                        res_g=res_g + a[i][j]*(green);
-                        res_b=res_b + a[i][j]*(blue);
-                        factor=a[i].length;
-                        factor= factor*(a.length);
-                    if(factor>9){            
-                        res_a=res_a/factor;
-                        res_r=res_r/factor;
-                        res_g=res_g/factor;          
-                        res_b=res_b/factor;
-                    }else {
-                        res_a=res_a/(factor+1);
-                        res_r=res_r/(factor+1);
-                        res_g=res_g/(factor+1);          
-                        res_b=res_b/(factor+1);
-                    }
-           
-                    if(res_a>255)
-                        res_a=255;
-                    if(res_a<0)
-                        res_a=0;
-               
-                    if(res_r>255)
-                        res_r=255;
-                    if(res_r<0)
-                        res_r=0;      
-               
-                    if(res_g>255)
-                        res_g=255;
-                    if(res_g<0)
-                        res_g=0;  
-
-                    if(res_b>255)
-                        res_b=255;
-                    if(res_b<0)
-                        res_b=0;
-                   
-                    res+=(res_a <<24) + (res_r<<16) + (res_g<<8) + res_b;
-                    imgBuffer4.setRGB(x, y, (int)(res));
-                    }
-                }
-            }
-
-               
-            }    
-
-        ImageIO.write(imgBuffer4, "bmp", f4);
-    
-    
-    }
-    
-    */
     
 }
